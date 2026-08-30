@@ -6,8 +6,8 @@
   --line:    #000000;
   --hair:    1px;
   --maxw:    1320px;
-  --font:    'Manrope', 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  --mono:    'Manrope', 'Helvetica Neue', Arial, sans-serif;
+  --font:    'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  --mono:    'Inter', 'Helvetica Neue', Arial, sans-serif;
 }
 
 /* ===== RESET ===== */
@@ -180,6 +180,7 @@ ul { list-style: none; }
 .hero__actions .btn:last-child { border-right: var(--hair) solid var(--ink); }
 .hero__media { position: relative; min-height: 480px; overflow: hidden; }
 .hero__media img { width: 100%; height: 100%; object-fit: cover; position: absolute; inset: 0; }
+.hero__media-mobile { display: none; }
 
 /* ===== STATS ===== */
 .stats { border-bottom: var(--hair) solid var(--ink); }
@@ -604,7 +605,13 @@ ul { list-style: none; }
 @media (max-width: 820px) {
   .hero__inner { grid-template-columns: 1fr; }
   .hero__content { border-right: none; padding: 40px 0; }
-  .hero__media { min-height: 360px; border-top: var(--hair) solid var(--ink); }
+  .hero__media { display: none; }
+  .hero__media-mobile {
+    display: block;
+    margin: 0 0 26px;
+    border: var(--hair) solid var(--ink);
+  }
+  .hero__media-mobile img { width: 100%; height: auto; display: block; }
   .cta__inner { grid-template-columns: 1fr; }
   .cta__text { border-right: none; padding: 40px 20px; }
   .lead-form--cta { padding: 0 20px 40px; }
@@ -612,8 +619,9 @@ ul { list-style: none; }
   .quote__left { order: 1; padding: 40px 20px; }
   .quote__media { order: 2; border-left: none; border-right: none; border-top: var(--hair) solid var(--ink); border-bottom: var(--hair) solid var(--ink); aspect-ratio: 3/4; }
   .quote__right { order: 3; padding: 40px 20px; }
-  .quote__title { margin-top: 20px; }
+  .quote__title { margin-top: 20px; font-size: clamp(64px, 19vw, 96px); }
   .quote__foot { padding-top: 24px; }
+  .quote__arrow { margin-top: 34px; }
   .nav {
     position: fixed; top: 70px; right: 0;
     width: min(82vw, 340px); height: calc(100vh - 70px);
