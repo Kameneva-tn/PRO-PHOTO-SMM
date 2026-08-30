@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Заявки — ProPhoto Admin</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, Segoe UI, Roboto, sans-serif; background: #f4f4f5; color: #111; padding: 24px; }
+    h1 { font-size: 22px; margin-bottom: 16px; }
+    .login { max-width: 320px; margin: 80px auto; background: #fff; padding: 28px; border-radius: 12px; box-shadow: 0 4px 20px rgba(0,0,0,.06); }
+    .login input { width: 100%; padding: 12px; border: 1px solid #ddd; border-radius: 8px; margin: 10px 0; font-size: 15px; }
+    .login button, .bar button { background: #111; color: #fff; border: none; padding: 12px 18px; border-radius: 8px; cursor: pointer; font-size: 14px; }
+    .bar { display: flex; gap: 12px; align-items: center; margin-bottom: 16px; flex-wrap: wrap; }
+    .bar input { padding: 9px 12px; border: 1px solid #ddd; border-radius: 8px; }
+    .stats { display: flex; gap: 10px; margin-left: auto; font-size: 13px; }
+    .stats span { background: #fff; padding: 8px 12px; border-radius: 8px; }
+    table { width: 100%; border-collapse: collapse; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+    th, td { padding: 11px 12px; text-align: left; font-size: 13px; border-bottom: 1px solid #f0f0f0; vertical-align: top; }
+    th { background: #fafafa; font-weight: 600; text-transform: uppercase; font-size: 11px; letter-spacing: .04em; color: #666; }
+    tr:hover td { background: #fafafa; }
+    .badge { padding: 4px 10px; border-radius: 999px; font-size: 11px; font-weight: 600; white-space: nowrap; }
+    .b-new { background: #e0edff; color: #1a56db; }
+    .b-contacted { background: #fff3cd; color: #92730a; }
+    .b-paid { background: #d1fae5; color: #047857; }
+    .b-cancelled { background: #fde2e2; color: #b91c1c; }
+    select { padding: 6px 8px; border: 1px solid #ddd; border-radius: 6px; font-size: 12px; }
+    .muted { color: #999; }
+    @media (max-width:700px){ .hide-sm{display:none} }
+  </style>
+</head>
+<body>
+  <div id="login" class="login">
+    <h1>Вхід в адмінку</h1>
+    <input type="password" id="pass" placeholder="Пароль">
+    <button onclick="login()">Увійти</button>
+    <p id="err" style="color:#b91c1c;font-size:13px;margin-top:8px"></p>
+  </div>
+
+  <div id="app" style="display:none">
+    <div class="bar">
+      <h1>Заявки</h1>
+      <input type="text" id="search" placeholder="Пошук за ім'ям / телефоном…" oninput="render()">
+      <select id="filter" onchange="render()">
+        <option value="">Усі статуси</option>
+        <option value="new">Нові</option>
+        <option value="contacted">Зв'язались</option>
+        <option value="paid">Оплачені</option>
+        <option value="cancelled">Скасовані</option>
+      </select>
+      <button onclick="load()">↻ Оновити</button>
+      <div class="stats" id="stats"></div>
+    </div>
+    <table>
+      <thead>
+        <tr>
+          <th>#</th><th>Дата</th><th>Ім'я</th><th>Телефон</th>
+          <th class="hide-sm">Email</th><th>Пакет</th><th>Сума</th>
+          <th class="hide-sm">Запит</th><th>Коментар менеджера</th><th>Статус</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+  <script>
+    let PASS = '';
+    let DATA = [];
+
+    function login() {
+      PASS = document.getElementById('pass').value;
+      load(true);
+    }
+
+    async function load(fromLogin) {
+      try {
+        const r = await fetch('/api/admin/leads', { headers: { 'X-Admin-Password': PASS } });
+        if (r.status === 401) {
+          if (fromLogin) document.getElementById('err').textContent = 'Невірний пароль';
+          return;
+        }
+        const j = await r.json();
+        DATA = j.leads || [];
+        sessionStorage.setItem('pp_pass', PASS);
+        document.getElementById('login').style.display = 'none';
+        document.getElementById('app').style.display = 'block';
+        render();
+      } catch (e) {
+        document.getElementById('err').textContent = 'Помилка з\'єднання';
+      }
+    }
+
+    function render() {
+      const q = document.getElementById('search').value.toLowerCase();
+      const f = document.getElementById('filter').value;
+      const rows = DATA.filter(l =>
+        (!f || l.status === f) &&
+        (!q || (l.name || '').toLowerCase().includes(q) || (l.phone || '').includes(q))
+      );
+
+      const names = { new: 'Нова', contacted: 'Зв\'язались', paid: 'Оплачено', cancelled: 'Скасовано' };
+      document.getElementById('tbody').innerHTML = rows.map(l => `
+        <tr>
+          <td>${l.id}</td>
+          <td class="muted">${l.created_at || ''}</td>
+          <td><b>${escapeHtml(l.name)}</b></td>
+          <td><a href="tel:${escapeHtml(l.phone)}">${escapeHtml(l.phone)}</a></td>
+          <td class="hide-sm">${escapeHtml(l.email || '')}</td>
+          <td>${escapeHtml(l.package || '')}</td>
+          <td>${l.amount ? l.amount + ' грн' : ''}</td>
+          <td class="hide-sm muted">${escapeHtml(l.message || '')}</td>
+          <td>
+            <textarea id="cm-${l.id}" rows="2" placeholder="Результат дзвінка…"
+              style="width:170px;border:1px solid #ddd;border-radius:6px;padding:6px;font-size:12px;font-family:inherit;resize:vertical">${escapeHtml(l.comment || '')}</textarea>
+            <button onclick="saveComment(${l.id})" style="margin-top:4px;background:#111;color:#fff;border:none;border-radius:6px;padding:5px 10px;font-size:11px;cursor:pointer">Зберегти</button>
+          </td>
+          <td>
+            <span class="badge b-${l.status}">${names[l.status] || l.status}</span><br>
+            <select onchange="setStatus(${l.id}, this.value)" style="margin-top:6px">
+              <option value="">змінити…</option>
+              <option value="new">Нова</option>
+              <option value="contacted">Зв'язались</option>
+              <option value="paid">Оплачено</option>
+              <option value="cancelled">Скасовано</option>
+            </select>
+          </td>
+        </tr>`).join('') || '<tr><td colspan="9" class="muted" style="text-align:center;padding:30px">Немає заявок</td></tr>';
+
+      const count = s => DATA.filter(l => l.status === s).length;
+      document.getElementById('stats').innerHTML =
+        `<span>Всього: <b>${DATA.length}</b></span>
+         <span>Нові: <b>${count('new')}</b></span>
+         <span>Оплачені: <b>${count('paid')}</b></span>`;
+    }
+
+    async function setStatus(id, status) {
+      if (!status) return;
+      await fetch('/api/admin/leads/' + id + '/status', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': PASS },
+        body: JSON.stringify({ status }),
+      });
+      load();
+    }
+
+    async function saveComment(id) {
+      const val = document.getElementById('cm-' + id).value;
+      await fetch('/api/admin/leads/' + id + '/comment', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'X-Admin-Password': PASS },
+        body: JSON.stringify({ comment: val }),
+      });
+      const btn = event.target;
+      const old = btn.textContent;
+      btn.textContent = '✓ Збережено';
+      setTimeout(() => { btn.textContent = old; }, 1500);
+    }
+
+    function escapeHtml(s){return String(s||'').replace(/[<>&]/g,c=>({'<':'&lt;','>':'&gt;','&':'&amp;'}[c]));}
+
+    // auto-login if we have a saved password this session
+    const saved = sessionStorage.getItem('pp_pass');
+    if (saved) { PASS = saved; load(); }
+  </script>
+</body>
+</html>

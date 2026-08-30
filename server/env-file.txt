@@ -1,0 +1,16 @@
+PORT=3000
+PUBLIC_URL=http://localhost:3000
+CORS_ORIGIN=*
+
+# ===== LiqPay (ПриватБанк) =====
+# Встав сюди свої два ключі з кабінету LiqPay (Налаштування → API)
+LIQPAY_PUBLIC_KEY=ВСТАВ_СЮДИ_PUBLIC_KEY
+LIQPAY_PRIVATE_KEY=ВСТАВ_СЮДИ_PRIVATE_KEY
+
+# ===== Telegram (вже заповнено) =====
+TELEGRAM_BOT_TOKEN=8986741638:AAH2Y1sTLYOKYGpymZGdyvoJDyciGcPBkFU
+TELEGRAM_CHAT_ID=-5360659988
+
+# ===== Адмінка =====
+# Заміни на свій надійний пароль для входу в /admin
+ADMIN_PASSWORD=changeme123
