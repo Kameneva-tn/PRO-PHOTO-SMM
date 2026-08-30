@@ -1,4 +1,4 @@
-/* ===== Program data (accordion) ===== */
+/* ===== Program data ===== */
 const PROGRAM = [
   ['00', 'Вступна лекція', 'Важливість візуалу та стратегії ведення соцмереж. Налаштування камери телефону.'],
   ['01', 'Контент — інструмент продажів', 'Що нас чіпляє у візуалі та який візуал продає. Міфи про частоту постингу. Потрібне обладнання для ведення блогу на різний бюджет. Базові схеми світла.'],
@@ -16,6 +16,25 @@ const PROGRAM = [
   ['13', 'Розробка особистої стратегії розвитку та просування', 'Побудова власної стратегії ведення та просування блогу крок за кроком.'],
   ['14', 'Налаштування таргетованої реклами', 'Запуск таргету без зливу бюджету: базові налаштування та аналітика.'],
 ];
+
+/* ===== Backend integration ===== */
+// Адреса бекенду на Render:
+const API_BASE = "https://pro-photo-smm.onrender.com";
+
+function apiUrl(p) { return (API_BASE || "") + p; }
+
+// Redirect the browser to LiqPay checkout using the signed data from our server
+function goToLiqPay(data, signature) {
+  const form = document.createElement('form');
+  form.method = 'POST';
+  form.action = 'https://www.liqpay.ua/api/3/checkout';
+  form.acceptCharset = 'utf-8';
+  form.innerHTML =
+    `<input type="hidden" name="data" value="${data}">` +
+    `<input type="hidden" name="signature" value="${signature}">`;
+  document.body.appendChild(form);
+  form.submit();
+}
 
 /* ===== Build program list (expandable) ===== */
 (function buildProgram() {
@@ -40,7 +59,6 @@ const PROGRAM = [
     const bodyEl = row.querySelector('.prog-body');
     head.addEventListener('click', () => {
       const open = row.classList.contains('is-open');
-      // close all
       wrap.querySelectorAll('.prog-row').forEach(r => {
         r.classList.remove('is-open');
         r.querySelector('.prog-body').style.maxHeight = null;
@@ -84,7 +102,7 @@ const PROGRAM = [
     orderEl.hidden = true;
     modal.dataset.type = type;
     modal.dataset.pkg = data.pkg || '';
-    modal.dataset.amount = (data.price || '').replace(/[^\d]/g, ''); // "11 900 грн" -> "11900"
+    modal.dataset.amount = (data.price || '').replace(/[^\d]/g, '');
     if (type === 'order') {
       titleEl.textContent = 'Оформлення замовлення';
       subEl.textContent = 'Залиште свої контакти для оформлення покупки — ми зв\u2019яжемося з вами.';
@@ -115,26 +133,7 @@ const PROGRAM = [
   document.addEventListener('keydown', e => { if (e.key === 'Escape' && !modal.hidden) close(); });
 })();
 
-/* ===== Backend integration ===== */
-// Set this to your deployed backend URL, e.g. "https://prophoto-api.onrender.com"
-// Leave empty ("") to use the same origin the site is served from.
-const API_BASE = "";
-
-function apiUrl(p) { return (API_BASE || "") + p; }
-
-// Redirect the browser to LiqPay checkout using the signed data from our server
-function goToLiqPay(data, signature) {
-  const form = document.createElement('form');
-  form.method = 'POST';
-  form.action = 'https://www.liqpay.ua/api/3/checkout';
-  form.acceptCharset = 'utf-8';
-  form.innerHTML =
-    `<input type="hidden" name="data" value="${data}">` +
-    `<input type="hidden" name="signature" value="${signature}">`;
-  document.body.appendChild(form);
-  form.submit();
-}
-
+/* ===== Forms → backend ===== */
 (function forms() {
   document.querySelectorAll('.lead-form').forEach(form => {
     form.addEventListener('submit', async e => {
@@ -143,7 +142,6 @@ function goToLiqPay(data, signature) {
       const fd = new FormData(form);
       const btn = form.querySelector('button[type="submit"], button:not([type])');
 
-      // Gather modal context (package + amount) if this form is inside the modal
       const modal = form.closest('.modal');
       const type = modal ? modal.dataset.type : (form.id === 'leadForm' ? 'lead' : 'contact');
       const pkg = modal ? (modal.dataset.pkg || '') : '';
@@ -162,7 +160,6 @@ function goToLiqPay(data, signature) {
       if (btn) { btn.disabled = true; btn.dataset.label = btn.textContent; btn.textContent = 'Надсилаємо…'; }
 
       try {
-        // ORDER with a real amount -> save lead + start LiqPay payment
         if (type === 'order' && amount > 0) {
           const r = await fetch(apiUrl('/api/pay'), {
             method: 'POST',
@@ -172,12 +169,11 @@ function goToLiqPay(data, signature) {
           const j = await r.json();
           if (j.ok && j.data && j.signature) {
             goToLiqPay(j.data, j.signature);
-            return; // browser navigates away to LiqPay
+            return;
           }
           throw new Error(j.error || 'Помилка оплати');
         }
 
-        // Otherwise just save the lead
         const r = await fetch(apiUrl('/api/lead'), {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
