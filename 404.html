@@ -5,7 +5,11 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>404 — Сторінку не знайдено | ProPhoto Academy</title>
   <meta name="robots" content="noindex">
-  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <script>
+    // Site root = first path segment if hosted in a repo subfolder (github.io/REPO/), else "/"
+    (function(){var p=location.pathname.split('/');var b=(location.hostname.endsWith('github.io')&&p[1])?'/'+p[1]+'/':'/';document.write('<base href="'+b+'">');})();
+  </script>
+  <link rel="icon" type="image/svg+xml" href="assets/favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Bad+Script&display=swap" rel="stylesheet">
@@ -116,8 +120,8 @@
 </head>
 <body>
   <header class="header">
-    <a href="/" aria-label="ProPhoto Academy"><img src="/assets/logo-black.png" alt="ProPhoto Academy"></a>
-    <a href="/" class="header__link">На головну</a>
+    <a href="index.html" aria-label="ProPhoto Academy"><img src="assets/logo-black.png" alt="ProPhoto Academy"></a>
+    <a href="index.html" class="header__link">На головну</a>
   </header>
 
   <main class="wrap">
@@ -127,13 +131,4 @@
       <h1>Такої сторінки<br>не існує</h1>
       <p>Схоже, посилання застаріло або в адресі помилка. Але курс на місці — повертайся на головну і обирай свій пакет.</p>
       <div class="actions">
-        <a href="/" class="btn btn--accent">На головну</a>
-        <a href="/#packages" class="btn">Обрати пакет</a>
-      </div>
-    </div>
-    <div class="right">
-      <img src="/assets/quote.jpg" alt="">
-    </div>
-  </main>
-</body>
-</html>
+        <a href="index.html" class="btn btn--accent">На
