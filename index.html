@@ -219,81 +219,44 @@
     <div class="container">
       <h2 class="section-title">Пакети</h2>
 
-      <div class="cmp">
-        <!-- head -->
-        <div class="cmp__row cmp__row--head">
-          <div class="cmp__feature"></div>
-          <div class="cmp__col">
-            <div class="cmp__pkg">BASE</div>
-            <div class="cmp__price"><s>7 300</s> 4 200 грн</div>
+      <div class="packages__grid">
+        <article class="pkg">
+          <div class="pkg__name">BASE</div>
+          <div class="pkg__price">
+            <span class="pkg__old">7 300 грн</span>
+            <span class="pkg__new">4 200 грн</span>
           </div>
-          <div class="cmp__col cmp__col--featured">
-            <div class="cmp__pkg">Platinum Expert</div>
-            <div class="cmp__price"><s>16 900</s> 11 900 грн</div>
-          </div>
-        </div>
+          <ul class="pkg__list">
+            <li>3 лекції на тиждень наживо</li>
+            <li>Завдання для закріплення матеріалів</li>
+            <li>Доступ до матеріалів в записі — 5 місяців</li>
+            <li>Самостійне проходження курсу</li>
+          </ul>
+          <p class="pkg__note">*є оплата частинами</p>
+          <button class="btn btn--ghost pkg__btn" data-modal-open="order" data-pkg="BASE" data-price="4 200 грн">Придбати курс</button>
+        </article>
 
-        <div class="cmp__row">
-          <div class="cmp__feature">3 лекції на тиждень наживо</div>
-          <div class="cmp__col cmp__yes">✓</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Завдання для закріплення матеріалів</div>
-          <div class="cmp__col cmp__yes">✓</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Детальний фідбек по домашніх роботах</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Доступ до матеріалів в записі</div>
-          <div class="cmp__col cmp__txt">5 місяців</div>
-          <div class="cmp__col cmp__txt">назавжди</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Чат групи для підтримки 24/7</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Детальна перевірка завдань</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Індивідуальний зідзвон для розбору твоїх задач</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Побудова індивідуальної особистої стратегії</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Майстермайнд для визначення стратегії розвитку особистого бренду</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-        <div class="cmp__row">
-          <div class="cmp__feature">Практичні завдання з перевіркою — як частина роботи над акаунтом</div>
-          <div class="cmp__col cmp__no">✕</div>
-          <div class="cmp__col cmp__yes">✓</div>
-        </div>
-
-        <!-- buy row -->
-        <div class="cmp__row cmp__row--buy">
-          <div class="cmp__feature cmp__note">*є оплата частинами</div>
-          <div class="cmp__col">
-            <button class="btn btn--ghost" data-modal-open="order" data-pkg="BASE" data-price="4 200 грн">Придбати</button>
+        <article class="pkg pkg--featured">
+          <div class="pkg__badge">Хіт</div>
+          <div class="pkg__name">Platinum Expert</div>
+          <div class="pkg__price">
+            <span class="pkg__old">16 900 грн</span>
+            <span class="pkg__new">11 900 грн</span>
           </div>
-          <div class="cmp__col">
-            <button class="btn btn--accent" data-modal-open="order" data-pkg="Platinum Expert" data-price="11 900 грн">Придбати</button>
-          </div>
-        </div>
+          <p class="pkg__deadline">(до 10 вересня)</p>
+          <ul class="pkg__list">
+            <li>3 лекції на тиждень наживо</li>
+            <li>Детальний фідбек по домашніх роботах</li>
+            <li>Доступ до матеріалів в записі — назавжди</li>
+            <li>Чат групи для підтримки 24/7</li>
+            <li>Індивідуальний зідзвон для розбору твоїх задач</li>
+            <li>Побудова індивідуальної особистої стратегії</li>
+            <li>Майстермайнд для визначення стратегії розвитку особистого бренду</li>
+            <li>Практичні завдання з перевіркою — як частина роботи над акаунтом</li>
+          </ul>
+          <p class="pkg__note">*є оплата частинами</p>
+          <button class="btn btn--accent pkg__btn" data-modal-open="order" data-pkg="Platinum Expert" data-price="11 900 грн">Придбати курс</button>
+        </article>
       </div>
     </div>
   </section>
