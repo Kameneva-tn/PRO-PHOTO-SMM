@@ -411,50 +411,45 @@ ul { list-style: none; }
   max-width: 900px;
 }
 
-/* ===== PACKAGES — comparison table ===== */
+/* ===== PACKAGES ===== */
 .packages { border-bottom: var(--hair) solid var(--ink); }
-.packages .container { padding-top: 70px; padding-bottom: 70px; }
-.cmp { margin-top: 40px; border-top: 2px solid var(--ink); }
-.cmp__row {
-  display: grid;
-  grid-template-columns: 1fr 180px 220px;
-  align-items: center;
+.packages .container { padding-top: 70px; padding-bottom: 0; }
+.packages__grid {
+  display: grid; grid-template-columns: repeat(2, 1fr);
+  border-top: var(--hair) solid var(--ink);
+  margin: 40px -20px 0;
+}
+.pkg {
+  position: relative;
+  padding: 40px 28px;
+  border-right: var(--hair) solid var(--ink);
   border-bottom: var(--hair) solid var(--ink);
+  display: flex; flex-direction: column; gap: 18px;
 }
-.cmp__row--head { border-bottom: 2px solid var(--ink); }
-.cmp__feature {
-  padding: 20px 16px 20px 0;
-  font-size: 16px;
-  font-weight: 500;
+.pkg:last-child { border-right: none; }
+.pkg--featured { background: var(--ink); color: var(--bg); }
+.pkg--featured .pkg__old { color: rgba(255,255,255,.5); }
+.pkg--featured .pkg__list li { color: rgba(255,255,255,.85); }
+.pkg--featured .pkg__list li::before { color: var(--bg); }
+.pkg--featured .pkg__note, .pkg--featured .pkg__deadline { color: rgba(255,255,255,.6); }
+.pkg--featured .btn { border-color: var(--bg); background: var(--bg); color: var(--ink); }
+.pkg--featured .btn:hover { background: transparent; color: var(--bg); }
+.pkg__badge {
+  position: absolute; top: 0; right: 0;
+  background: var(--bg); color: var(--ink);
+  font-size: 10px; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase;
+  padding: 8px 14px; border-left: var(--hair) solid var(--bg); border-bottom: var(--hair) solid var(--bg);
 }
-.cmp__col {
-  padding: 20px 10px;
-  text-align: center;
-  border-left: var(--hair) solid var(--ink);
-  align-self: stretch;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-}
-.cmp__col--featured { background: var(--ink); color: var(--bg); }
-.cmp__pkg {
-  font-size: 15px;
-  font-weight: 800;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-}
-.cmp__price { font-size: 13px; }
-.cmp__price s { color: var(--muted); margin-right: 6px; }
-.cmp__col--featured .cmp__price s { color: rgba(255,255,255,.5); }
-.cmp__yes { font-size: 20px; font-weight: 700; }
-.cmp__no { font-size: 18px; color: var(--muted); }
-.cmp__txt { font-size: 14px; font-weight: 600; }
-.cmp__note { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
-.cmp__row--buy { border-bottom: none; padding-top: 6px; }
-.cmp__row--buy .cmp__col { border-left: none; padding: 20px 8px; }
-.cmp__row--buy .btn { width: 100%; padding: 14px 10px; font-size: 12px; }
+.pkg__name { font-size: 26px; font-weight: 700; text-transform: uppercase; letter-spacing: -0.02em; }
+.pkg__price { display: flex; align-items: baseline; gap: 12px; }
+.pkg__old { color: var(--muted); text-decoration: line-through; font-size: 16px; }
+.pkg__new { font-size: 40px; font-weight: 700; letter-spacing: -0.03em; }
+.pkg__deadline { font-size: 11px; letter-spacing: 0.08em; text-transform: uppercase; margin-top: -12px; }
+.pkg__list { display: flex; flex-direction: column; gap: 12px; flex: 1; }
+.pkg__list li { position: relative; padding-left: 24px; font-size: 14px; }
+.pkg__list li::before { content: "→"; position: absolute; left: 0; top: 0; font-weight: 700; }
+.pkg__note { font-size: 11px; letter-spacing: 0.06em; text-transform: uppercase; color: var(--muted); }
+.pkg__btn { margin-top: 6px; }
 
 /* ===== LECTURERS ===== */
 .lecturers { border-bottom: var(--hair) solid var(--ink); }
@@ -565,6 +560,13 @@ ul { list-style: none; }
 .lead-form__consent input { width: auto; border: var(--hair) solid var(--ink); }
 .lead-form__success { color: var(--ink); font-weight: 700; font-size: 14px; margin-top: 14px; text-transform: uppercase; }
 
+/* ===== FIX: no doubled bottom lines (grid card border + section border) ===== */
+.how__step, .pkg, .gallery__item { border-bottom: none; }
+.forwhom__grid .card:nth-last-child(-n+2),
+.lecturers__grid .lecturer:nth-last-child(-n+2) { border-bottom: none; }
+.reviews__grid { border-bottom: none; }
+.reviews__grid .review:nth-last-child(-n+3) { border-bottom: none; }
+
 /* ===== FOOTER ===== */
 .footer { background: var(--ink); color: var(--bg); }
 .footer__inner { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; padding-top: 60px; padding-bottom: 40px; }
@@ -649,8 +651,11 @@ ul { list-style: none; }
   .forwhom__grid, .lecturers__grid { grid-template-columns: 1fr; }
   .reviews__grid { grid-template-columns: 1fr; }
   .stat, .card, .lecturer, .how__step, .review { border-right: none; }
-  .stat, .how__step { border-bottom: var(--hair) solid var(--ink); }
-  .stats__grid .stat:last-child, .how__grid .how__step:last-child { border-bottom: none; }
+  .stat, .how__step, .pkg, .card, .lecturer, .review, .gallery__item { border-bottom: var(--hair) solid var(--ink); }
+  .stats__grid .stat:last-child, .how__grid .how__step:last-child,
+  .packages__grid .pkg:last-child, .forwhom__grid .card:last-child,
+  .lecturers__grid .lecturer:last-child, .reviews__grid .review:last-child,
+  .gallery__grid .gallery__item:last-child { border-bottom: none; }
   .prog-head { grid-template-columns: 150px 1fr auto; gap: 14px; }
   .prog-label { font-size: 15px; margin-bottom: 2px; }
   .prog-num { font-size: 74px; }
@@ -658,16 +663,6 @@ ul { list-style: none; }
   .prog-toggle { font-size: 30px; padding-bottom: 10px; }
   .prog-body p { padding: 0 0 20px; font-size: 14px; }
   .program__cap { width: 84px; height: 68px; top: -6px; }
-  /* порівняльна таблиця пакетів на мобільному */
-  .cmp__row { grid-template-columns: 1fr 70px 90px; }
-  .cmp__feature { font-size: 13px; padding: 14px 10px 14px 0; }
-  .cmp__col { padding: 14px 4px; }
-  .cmp__pkg { font-size: 11px; letter-spacing: 0.03em; }
-  .cmp__price { font-size: 10px; }
-  .cmp__yes { font-size: 16px; }
-  .cmp__no { font-size: 14px; }
-  .cmp__txt { font-size: 11px; }
-  .cmp__row--buy { grid-template-columns: 1fr 1fr; }
-  .cmp__row--buy .cmp__feature { grid-column: 1 / -1; padding-bottom: 4px; }
-  .cmp__row--buy .btn { font-size: 10px; padding: 12px 6px; }
+  .packages__grid { grid-template-columns: 1fr; }
+  .pkg { border-right: none; }
 }
