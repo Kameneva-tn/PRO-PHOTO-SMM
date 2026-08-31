@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 — Сторінку не знайдено | ProPhoto Academy</title>
+  <meta name="robots" content="noindex">
+  <link rel="icon" type="image/svg+xml" href="/assets/favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;800&family=Bad+Script&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html, body { height: 100%; }
+    body {
+      font-family: 'Inter', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+      background: #fff;
+      color: #000;
+      -webkit-font-smoothing: antialiased;
+      display: flex;
+      flex-direction: column;
+    }
+    .header {
+      border-bottom: 1px solid #000;
+      padding: 18px 20px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .header img { height: 34px; width: auto; display: block; }
+    .header a { color: inherit; text-decoration: none; }
+    .header__link {
+      font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase;
+      border: 1px solid #000; padding: 10px 18px;
+      transition: background .18s, color .18s;
+    }
+    .header__link:hover { background: #000; color: #fff; }
+
+    .wrap {
+      flex: 1;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 0;
+    }
+    .left {
+      padding: 60px 40px 60px 20px;
+      border-right: 1px solid #000;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      max-width: 700px;
+      margin-left: auto;
+      width: 100%;
+    }
+    .eyebrow {
+      font-size: 13px; letter-spacing: 0.14em; text-transform: uppercase;
+      color: #6a6a6a; margin-bottom: 22px;
+    }
+    .eyebrow .script {
+      font-family: 'Bad Script', cursive; text-transform: none; letter-spacing: 0;
+      font-size: 22px; color: #000; margin-right: 6px;
+    }
+    .code {
+      font-size: clamp(140px, 22vw, 320px);
+      font-weight: 800;
+      line-height: 0.8;
+      letter-spacing: -0.06em;
+      margin-bottom: 28px;
+    }
+    h1 {
+      font-size: clamp(28px, 3.4vw, 46px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: -0.03em;
+      line-height: 0.95;
+      margin-bottom: 18px;
+    }
+    p {
+      font-size: 15px;
+      color: #6a6a6a;
+      max-width: 440px;
+      margin-bottom: 34px;
+      line-height: 1.45;
+    }
+    .actions { display: flex; flex-wrap: wrap; }
+    .btn {
+      display: inline-flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.14em; text-transform: uppercase;
+      padding: 16px 30px; border: 1px solid #000; text-decoration: none; color: #000;
+      background: #fff; transition: background .18s, color .18s;
+    }
+    .btn + .btn { border-left: none; }
+    .btn:hover { background: #000; color: #fff; }
+    .btn--accent { background: #000; color: #fff; }
+    .btn--accent:hover { background: #fff; color: #000; }
+
+    .right {
+      position: relative;
+      overflow: hidden;
+      background: #000;
+    }
+    .right img {
+      width: 100%; height: 100%; object-fit: cover;
+      position: absolute; inset: 0; opacity: .85;
+    }
+
+    @media (max-width: 820px) {
+      .wrap { grid-template-columns: 1fr; }
+      .left { border-right: none; padding: 40px 20px; margin: 0; }
+      .right { min-height: 300px; border-top: 1px solid #000; }
+      .actions { flex-direction: column; }
+      .btn { width: 100%; }
+      .btn + .btn { border-left: 1px solid #000; border-top: none; }
+    }
+  </style>
+</head>
+<body>
+  <header class="header">
+    <a href="/" aria-label="ProPhoto Academy"><img src="/assets/logo-black.png" alt="ProPhoto Academy"></a>
+    <a href="/" class="header__link">На головну</a>
+  </header>
+
+  <main class="wrap">
+    <div class="left">
+      <div class="eyebrow"><span class="script">*упс,</span> тут нічого немає</div>
+      <div class="code">404</div>
+      <h1>Такої сторінки<br>не існує</h1>
+      <p>Схоже, посилання застаріло або в адресі помилка. Але курс на місці — повертайся на головну і обирай свій пакет.</p>
+      <div class="actions">
+        <a href="/" class="btn btn--accent">На головну</a>
+        <a href="/#packages" class="btn">Обрати пакет</a>
+      </div>
+    </div>
+    <div class="right">
+      <img src="/assets/quote.jpg" alt="">
+    </div>
+  </main>
+</body>
+</html>
